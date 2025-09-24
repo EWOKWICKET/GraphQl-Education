@@ -1,5 +1,6 @@
 import {
   Args,
+  Directive,
   Mutation,
   Parent,
   Query,
@@ -19,7 +20,7 @@ export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
   @Query(() => User)
-  getUser(@Args('id') id: number) {
+  getUser(@Args('id') id: string) {
     return this.userService.getUser({ id });
   }
 
@@ -33,6 +34,7 @@ export class UserResolver {
     return this.userService.getUserByNameAndEmail(input);
   }
 
+  @Directive('@deprecated(reason: "This query is deprecated")')
   @Query(() => User)
   getUserByNameAndEmailArgs(
     @Args() { name, email }: GetUserByNameAndEmailArgs,

@@ -17,3 +17,12 @@ export class GetUserByNameAndEmailArgs {
   @Field(() => String)
   email: string;
 }
+
+@InputType()
+export class CreateUserInput {
+  @Field(() => String)
+  name: string;
+
+  @Field(() => String)
+  email: string;
+}

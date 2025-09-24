@@ -1,5 +1,4 @@
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
-import { Comment } from './comment.model';
 
 @ObjectType()
 export class User {
@@ -17,4 +16,20 @@ export class User {
 
   @Field(() => [Comment], { nullable: 'items' })
   comments: Comment[];
+}
+
+@ObjectType()
+export class Comment {
+  @Field(() => ID)
+  id: number;
+
+  @Field(() => String, {
+    nullable: true,
+    description: 'The header of the comment',
+    name: 'header',
+  })
+  commentHeader?: string;
+
+  @Field(() => String)
+  content: string;
 }

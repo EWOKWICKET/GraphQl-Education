@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { User } from './dto/user.model';
-import { GetUserByNameAndEmailInput } from './dto/user-name-email.input';
+import { GetUserByNameAndEmailInput } from './dto/user.input';
 
 @Injectable()
 export class UserService {

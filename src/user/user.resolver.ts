@@ -7,13 +7,12 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { UserService } from './user.service';
-import { User } from './dto/user.model';
-import { Comment } from './dto/comment.model';
+import { User, Comment } from './dto/user.model';
 import {
   GetUserByNameAndEmailArgs,
   GetUserByNameAndEmailInput,
-} from './dto/user-name-email.input';
-import { CreateUserInput } from './dto/create-user.input';
+  CreateUserInput,
+} from './dto/user.input';
 
 @Resolver(() => User)
 export class UserResolver {

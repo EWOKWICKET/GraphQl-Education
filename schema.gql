@@ -2,20 +2,20 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type User {
+  id: ID!
+  name: String!
+  age: Int
+  email: String!
+  comments: [Comment]!
+}
+
 type Comment {
   id: ID!
 
   """The header of the comment"""
   header: String
   content: String!
-}
-
-type User {
-  id: ID!
-  name: String!
-  age: Int @deprecated(reason: "Use email instead")
-  email: String!
-  comments: [Comment]!
 }
 
 type Query {

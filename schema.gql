@@ -2,63 +2,34 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
+interface Person {
   id: ID!
-  name: String!
-  age: Int
-  email: String!
-  comments: [Comment]!
-  metadata: JSON
-  createdAt: Date! @deprecated(reason: "This field is deprecated")
-  uuid: UUID
-
-  """My custom string"""
-  customString: CustomString
+  username: String!
+  password: String!
+  role: String!
 }
 
-"""
-The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
-"""
-scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
-
-"""
-A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
-"""
-scalar Date
-
-"""
-A field whose value is a generic Universally Unique Identifier: https://en.wikipedia.org/wiki/Universally_unique_identifier.
-"""
-scalar UUID
-
-"""CustomString custom scalar type"""
-scalar CustomString
-
-type Comment {
+type User implements Person {
   id: ID!
-  userId: ID!
+  username: String!
+  password: String!
+  role: String!
+  firstName: String
+  lastName: String
+}
 
-  """The header of the comment"""
-  header: String
-  content: String!
+type Admin implements Person {
+  id: ID!
+  username: String!
+  password: String!
+  role: String!
+  team: String!
 }
 
 type Query {
-  getUser(id: String!): User!
-  getUserByNameAndEmailInput(input: GetUserByNameAndEmailInput!): User!
-  getUserByNameAndEmailArgs(name: String!, email: String!): User!
-}
-
-input GetUserByNameAndEmailInput {
-  name: String!
-  email: String!
-}
-
-type Mutation {
-  createUser(input: CreateUserInput!): User!
-}
-
-input CreateUserInput {
-  name: String!
-  email: String!
+  getAllPeople: [Person!]!
+  getUser(id: Float!): User
+  getAdmin(id: Float!): Admin
+  getAllUsers: [User!]!
+  getAllAdmins: [Admin!]!
 }

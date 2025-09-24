@@ -1,83 +1,76 @@
 import { Injectable } from '@nestjs/common';
-import { User, Comment } from './dto/user.model';
-import { GetUserByNameAndEmailInput } from './dto/user.input';
+// import { Person, User, Admin } from './dto/person.types';
+import { Person, User, Admin } from './dto/abstract-person.types';
 
 @Injectable()
 export class UserService {
   private readonly users: User[] = [
     {
-      id: '1',
-      name: 'John Doe',
-      age: 30,
-      comments: [],
-      email: 'john.doe@example.com',
-      metadata: {
-        position: 'first',
-        commentsCount: 2,
-      },
-      createdAt: new Date(),
-      uuid: '123e4567-e89b-12d3-a456-426614174000',
+      id: 1,
+      username: 'john_doe',
+      password: 'password',
+      role: 'user',
+      firstName: 'John',
+      lastName: 'Doe',
     },
     {
-      id: '2',
-      name: 'Jane Doe',
-      age: 25,
-      comments: [],
-      email: 'jane.doe@example.com',
-      metadata: {},
-      createdAt: new Date(),
-      uuid: '123e4567-e89b-12d3-a456-426614174000',
+      id: 2,
+      username: 'jane_smith',
+      password: 'password',
+      role: 'user',
+      firstName: 'Jane',
+      lastName: 'Smith',
     },
     {
-      id: '3',
-      name: 'Jim Doe',
-      age: 20,
-      comments: [],
-      email: 'jim.doe@example.com',
-      metadata: {},
-      createdAt: new Date(),
-      uuid: '123e4567-e89b-12d3-a456-426614174000',
+      id: 3,
+      username: 'jim_beam',
+      password: 'password',
+      role: 'user',
+      firstName: 'Jim',
+      lastName: 'Beam',
     },
   ];
-
-  private readonly comments: Comment[] = [
+  private readonly admins: Admin[] = [
     {
-      id: '1',
-      userId: '1',
-      commentHeader: 'This is a comment header',
-      content: 'This is a comment',
+      id: 1,
+      username: 'admin_alice',
+      password: 'password',
+      role: 'admin',
+      team: 'potuhzni',
     },
-    { id: '2', userId: '1', content: 'This is a comment' },
-    { id: '3', userId: '2', content: 'This is a comment' },
+    {
+      id: 2,
+      username: 'manager_bob',
+      password: 'password',
+      role: 'admin',
+      team: 'sorry tut tilky potuzhni',
+    },
   ];
 
   constructor() {}
 
-  getUser({ id }: { id: string }) {
+  // Get all persons (both users and admins)
+  getAllPeople(): Person[] {
+    return [...this.users, ...this.admins];
+  }
+
+  // Get user by ID
+  getUser(id: number): User | undefined {
     return this.users.find((user) => user.id === id);
   }
 
-  getComments({ userId }: { userId: string }) {
-    return this.comments.filter((comment) => comment.userId === userId);
+  // Get admin by ID
+  getAdmin(id: number): Admin | undefined {
+    return this.admins.find((admin) => admin.id === id);
   }
 
-  getUserByNameAndEmail({ name, email }: GetUserByNameAndEmailInput) {
-    return this.users.find(
-      (user) => user.name === name && user.email === email,
-    );
+  // Get all users
+  getAllUsers(): User[] {
+    return this.users;
   }
 
-  createUser({ name, email }: { name: string; email: string }) {
-    const newUser = {
-      id: (this.users.length + 1).toString(),
-      name,
-      email,
-      comments: [],
-      metadata: { customMeta: 'new User' },
-      createdAt: new Date(),
-      uuid: '123e4567-e89b-12d3-a456-426614174000',
-    };
-    this.users.push(newUser);
-    return newUser;
+  // Get all admins
+  getAllAdmins(): Admin[] {
+    return this.admins;
   }
 }

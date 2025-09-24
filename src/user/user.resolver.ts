@@ -1,52 +1,34 @@
-import {
-  Args,
-  Directive,
-  Mutation,
-  Parent,
-  Query,
-  ResolveField,
-  Resolver,
-} from '@nestjs/graphql';
+import { Args, Query, Resolver } from '@nestjs/graphql';
 import { UserService } from './user.service';
-import { User, Comment } from './dto/user.model';
-import {
-  GetUserByNameAndEmailArgs,
-  GetUserByNameAndEmailInput,
-  CreateUserInput,
-} from './dto/user.input';
+import { Person, User, Admin } from './dto/person.types';
+// import { Person, User, Admin } from './dto/abstract-person.types';
 
-@Resolver(() => User)
+@Resolver()
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  @Query(() => User)
-  getUser(@Args('id') id: string) {
-    return this.userService.getUser({ id });
+  @Query(() => [Person])
+  getAllPeople(): Person[] {
+    return this.userService.getAllPeople();
   }
 
-  @ResolveField(() => [Comment])
-  comments(@Parent() user: User) {
-    return this.userService.getComments({ userId: user.id });
+  @Query(() => User, { nullable: true })
+  getUser(@Args('id') id: number): User | undefined {
+    return this.userService.getUser(id);
   }
 
-  @Query(() => User)
-  getUserByNameAndEmailInput(@Args('input') input: GetUserByNameAndEmailInput) {
-    return this.userService.getUserByNameAndEmail(input);
+  @Query(() => Admin, { nullable: true })
+  getAdmin(@Args('id') id: number): Admin | undefined {
+    return this.userService.getAdmin(id);
   }
 
-  @Directive('@deprecated(reason: "This query is deprecated")')
-  @Query(() => User)
-  getUserByNameAndEmailArgs(
-    @Args() { name, email }: GetUserByNameAndEmailArgs,
-  ) {
-    return this.userService.getUserByNameAndEmail({
-      name,
-      email,
-    });
+  @Query(() => [User])
+  getAllUsers(): User[] {
+    return this.userService.getAllUsers();
   }
 
-  @Mutation(() => User)
-  createUser(@Args('input') input: CreateUserInput) {
-    return this.userService.createUser(input);
+  @Query(() => [Admin])
+  getAllAdmins(): Admin[] {
+    return this.userService.getAllAdmins();
   }
 }

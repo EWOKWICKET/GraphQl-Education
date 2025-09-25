@@ -1,2 +1,3 @@
 33df42f // base setup + usage
 a4f41f2 // scalars + directives
+34e6b93 // interfaces + fragments

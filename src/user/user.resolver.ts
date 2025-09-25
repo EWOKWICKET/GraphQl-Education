@@ -1,9 +1,10 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { Person, User, Admin } from './dto/person.types';
+import { loggerMiddleware } from './middlwares/console-log.middleware';
 // import { Person, User, Admin } from './dto/abstract-person.types';
 
-@Resolver()
+@Resolver(() => Person)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
@@ -15,6 +16,15 @@ export class UserResolver {
   @Query(() => User, { nullable: true })
   getUser(@Args('id') id: number): User | undefined {
     return this.userService.getUser(id);
+  }
+
+  @ResolveField(() => [String], {
+    middleware: [loggerMiddleware],
+    nullable: true,
+  })
+  async rules() {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    return ['rule1', 'rule2', 'rule3'];
   }
 
   @Query(() => Admin, { nullable: true })
@@ -29,6 +39,8 @@ export class UserResolver {
 
   @Query(() => [Admin])
   getAllAdmins(): Admin[] {
-    return this.userService.getAllAdmins();
+    const admins = this.userService.getAllAdmins();
+    console.log('inside query');
+    return admins;
   }
 }

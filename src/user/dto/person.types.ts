@@ -62,6 +62,9 @@ export class Admin implements Person {
 
   @Field(() => String)
   team: string;
+
+  @Field(() => [String], { nullable: true })
+  rules?: string[];
 }
 
 // just to show
